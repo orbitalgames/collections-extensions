@@ -40,7 +40,7 @@ namespace OrbitalGames.Collections
 		/// <param name="separator">String to use as a separator</param>
 		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Joined string</returns>
-		public static string StringJoin<TSource>(this IEnumerable<TSource> source, string separator) where TSource : IFormattable
+		public static string StringJoin<TSource>(this IEnumerable<TSource> source, string separator)
 		{
 			if (source == null)
 			{
