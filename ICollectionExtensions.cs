@@ -38,44 +38,57 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">Collection of items from which the weights and elements can be derived</param>
 		/// <param name="weightSelector">A function to extract the weight from an element</param>
+		/// <param name="rng">Random number generator, or a default new instance if null</param>
+		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" />, <paramref name="weightSelector" />, or <paramref name="elementSelector" /> is null</exception>
+		/// <returns>Randomly selected weighted element</returns>
+		public static TSource WeightedRandom<TSource>(this ICollection<TSource> source, Func<TSource, int> weightSelector, Random rng = null)
+		{
+			return source.WeightedRandom(weightSelector, x => x, rng);
+		}
+
+		/// <summary>
+		/// Randomly select a weighted element from the given collection.
+		/// </summary>
+		/// <param name="source">Collection of items from which the weights and elements can be derived</param>
+		/// <param name="weightSelector">A function to extract the weight from an element</param>
 		/// <param name="elementSelector">A function to extract the resulting value from an element</param>
 		/// <param name="rng">Random number generator, or a default new instance if null</param>
 		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" />, <paramref name="weightSelector" />, or <paramref name="elementSelector" /> is null</exception>
 		/// <returns>Randomly selected weighted element</returns>
 		public static TResult WeightedRandom<TSource, TResult>(this ICollection<TSource> source, Func<TSource, int> weightSelector, Func<TSource, TResult> elementSelector, Random rng = null)
 		{
-			if (source == null)
-			{
-				throw new ArgumentException("source is null", "source");
-			}
-			if (weightSelector == null)
-			{
-				throw new ArgumentException("weightSelector is null", "weightSelector");
-			}
-			if (elementSelector == null)
-			{
-				throw new ArgumentException("elementSelector is null", "elementSelector");
-			}
-			if (source.Count == 0)
-			{
-				throw new InvalidOperationException("source contains no elements");
-			}
+			return source.WeightedRandom(weightSelector, (x, y) => elementSelector(x), rng);
+		}
+
+		/// <summary>
+		/// Randomly select a weighted element from the given collection. The element's index is used in the logic of the element selector function.
+		/// </summary>
+		/// <param name="source">Collection of items from which the weights and elements can be derived</param>
+		/// <param name="weightSelector">A function to extract the weight from an element</param>
+		/// <param name="elementSelector">A function to extract the resulting value from an element; the second parameter of the function represents the index of the source element</param>
+		/// <param name="rng">Random number generator, or a default new instance if null</param>
+		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" />, <paramref name="weightSelector" />, or <paramref name="elementSelector" /> is null</exception>
+		/// <returns>Randomly selected weighted element</returns>
+		public static TResult WeightedRandom<TSource, TResult>(this ICollection<TSource> source, Func<TSource, int> weightSelector, Func<TSource, int, TResult> elementSelector, Random rng = null)
+		{
 			if (rng == null)
 			{
 				rng = new Random();
 			}
-			int roll = rng.Next() % source.Sum(weightSelector);
-			int currentWeight = 0;
-			var item = source.GetEnumerator();
-			while (item.MoveNext())
-			{
-				currentWeight += weightSelector(item.Current);
-				if (currentWeight >= roll)
-				{
-					return elementSelector(item.Current);
-				}
-			}
-			return default(TResult);
+			return ElementByAggregate(source, 0, rng.Next() % source.Sum(weightSelector), weightSelector, (x, y) => x + y, elementSelector);
+		}
+
+		/// <summary>
+		/// Randomly select a weighted element from the given collection.
+		/// </summary>
+		/// <param name="source">Collection of items from which the weights and elements can be derived</param>
+		/// <param name="weightSelector">A function to extract the weight from an element</param>
+		/// <param name="rng">Random number generator, or a default new instance if null</param>
+		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" />, <paramref name="weightSelector" />, or <paramref name="elementSelector" /> is null</exception>
+		/// <returns>Randomly selected weighted element</returns>
+		public static TSource WeightedRandom<TSource>(this ICollection<TSource> source, Func<TSource, double> weightSelector, Random rng = null)
+		{
+			return source.WeightedRandom(weightSelector, x => x, rng);
 		}
 
 		/// <summary>
@@ -89,6 +102,34 @@ namespace OrbitalGames.Collections
 		/// <returns>Randomly selected weighted element</returns>
 		public static TResult WeightedRandom<TSource, TResult>(this ICollection<TSource> source, Func<TSource, double> weightSelector, Func<TSource, TResult> elementSelector, Random rng = null)
 		{
+			return source.WeightedRandom(weightSelector, (x, y) => elementSelector(x), rng);
+		}
+
+		/// <summary>
+		/// Randomly select a weighted element from the given collection. The element's index is used in the logic of the element selector function.
+		/// </summary>
+		/// <param name="source">Collection of items from which the weights and elements can be derived</param>
+		/// <param name="weightSelector">A function to extract the weight from an element</param>
+		/// <param name="elementSelector">A function to extract the resulting value from an element; the second parameter of the function represents the index of the source element</param>
+		/// <param name="rng">Random number generator, or a default new instance if null</param>
+		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" />, <paramref name="weightSelector" />, or <paramref name="elementSelector" /> is null</exception>
+		/// <returns>Randomly selected weighted element</returns>
+		public static TResult WeightedRandom<TSource, TResult>(this ICollection<TSource> source, Func<TSource, double> weightSelector, Func<TSource, int, TResult> elementSelector, Random rng = null)
+		{
+			if (rng == null)
+			{
+				rng = new Random();
+			}
+			return ElementByAggregate(source, 0, rng.NextDouble() * source.Sum(weightSelector), weightSelector, (x, y) => x + y, elementSelector);
+		}
+
+		private static TResult ElementByAggregate<TSource, TWeight, TResult>(ICollection<TSource> source,
+				TWeight seed,
+				TWeight max,
+				Func<TSource, TWeight> weightSelector,
+				Func<TWeight, TWeight, TWeight> weightAccumulator,
+				Func<TSource, int, TResult> elementSelector) where TWeight : IComparable
+		{
 			if (source == null)
 			{
 				throw new ArgumentException("source is null", "source");
@@ -96,6 +137,10 @@ namespace OrbitalGames.Collections
 			if (weightSelector == null)
 			{
 				throw new ArgumentException("weightSelector is null", "weightSelector");
+			}
+			if (weightAccumulator == null)
+			{
+				throw new ArgumentException("weightAccumulator is null", "weightAccumulator");
 			}
 			if (elementSelector == null)
 			{
@@ -105,19 +150,15 @@ namespace OrbitalGames.Collections
 			{
 				throw new InvalidOperationException("source contains no elements");
 			}
-			if (rng == null)
-			{
-				rng = new Random();
-			}
-			double roll = rng.NextDouble() * source.Sum(weightSelector);
-			double currentWeight = 0;
+			TWeight currentWeight = seed;
 			var item = source.GetEnumerator();
-			while (item.MoveNext())
+			int i = 0;
+			for (; item.MoveNext(); ++i)
 			{
-				currentWeight += weightSelector(item.Current);
-				if (currentWeight >= roll)
+				currentWeight = weightAccumulator(currentWeight, weightSelector(item.Current));
+				if (currentWeight.CompareTo(max) >= 0)
 				{
-					return elementSelector(item.Current);
+					return elementSelector(item.Current, i);
 				}
 			}
 			return default(TResult);
