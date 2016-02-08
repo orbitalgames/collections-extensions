@@ -38,13 +38,13 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">IEnumerable to join</param>
 		/// <param name="separator">String to use as a separator</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Joined string</returns>
 		public static string StringJoin<TSource>(this IEnumerable<TSource> source, string separator)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			return string.Join(separator, source.Select<TSource, string>(x => x.ToString()).ToArray());
 		}

@@ -38,13 +38,13 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">Collection to randomize</param>
 		/// <param name="rng">Random number generator, or a new default if unspecified</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Randomized copy of the given <paramref name="source" /></returns>
 		public static IList<TSource> Randomize<TSource>(this IList<TSource> source, Random rng = null)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			var result = new List<TSource>(source);
 			return result.RandomizeInPlace(rng);
@@ -55,13 +55,13 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">Collection to randomize</param>
 		/// <param name="rng">Random number generator, or a new default if unspecified</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Randomized <paramref name="source" /> for use with method chaining</returns>
 		public static IList<TSource> RandomizeInPlace<TSource>(this IList<TSource> source, Random rng = null)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			if (rng == null)
 			{
@@ -82,13 +82,13 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">Collection to randomize</param>
 		/// <param name="rng">Random number generator, or a new default if unspecified</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Securely randomized copy of the given <paramref name="source" /></returns>
 		public static IList<TSource> RandomizeSecure<TSource>(IList<TSource> source, RandomNumberGenerator rng = null)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			var result = new List<TSource>(source);
 			return result.RandomizeInPlaceSecure(rng);
@@ -99,13 +99,13 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">Collection to randomize</param>
 		/// <param name="rng">Random number generator, or a new default if unspecified</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Securely randomized <paramref name="source" /> for use with method chaining</returns>
 		public static IList<TSource> RandomizeInPlaceSecure<TSource>(this IList<TSource> source, RandomNumberGenerator rng = null)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			if (rng == null)
 			{

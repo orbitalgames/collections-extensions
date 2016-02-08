@@ -36,7 +36,7 @@ namespace OrbitalGames.Collections
 		/// Enumerate a LinkedList allowing for removal of nodes.
 		/// </summary>
 		/// <param name="source">LinkedList to enumerate</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Enumerable sequence of items contained in <paramref name="source" />.</returns>
 		/// <remarks>
 		/// This method is implemented using deferred execution. The immediate return value is an object that stores all the information that is required to perform the action. The query represented by this method is not executed until the object is enumerated either by calling its GetEnumerator method directly or by using foreach.
@@ -46,7 +46,7 @@ namespace OrbitalGames.Collections
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			LinkedListNode<TResult> current = source.First;
 			while (current != null)
@@ -62,7 +62,7 @@ namespace OrbitalGames.Collections
 		/// Enumerate a LinkedList allowing for removal of nodes.
 		/// </summary>
 		/// <param name="source">LinkedList to enumerate</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>Enumerable sequence of item nodes contained in <paramref name="source" />.</returns>
 		/// <remarks>
 		/// This method is implemented using deferred execution. The immediate return value is an object that stores all the information that is required to perform the action. The query represented by this method is not executed until the object is enumerated either by calling its GetEnumerator method directly or by using foreach.
@@ -72,7 +72,7 @@ namespace OrbitalGames.Collections
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			LinkedListNode<TResult> current = source.First;
 			while (current != null)
@@ -89,16 +89,16 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">LinkedList to which the new items will be added</param>
 		/// <param name="items">Items to add</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> or <paramref name="items" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="items" /> is null</exception>
 		public static void AddRangeLast<TResult>(this LinkedList<TResult> source, IEnumerable<TResult> items)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			if (items == null)
 			{
-				throw new ArgumentException("items is null", "items");
+				throw new ArgumentNullException("items");
 			}
 			foreach (var item in items)
 			{
@@ -111,12 +111,12 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">LinkedList to which the new items will be added</param>
 		/// <param name="items">Items to add</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> or <paramref name="items" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="items" /> is null</exception>
 		public static void AddRangeFirst<TResult>(this LinkedList<TResult> source, IEnumerable<TResult> items)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			foreach (var item in items)
 			{
@@ -129,17 +129,17 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">A LinkedList from which a node is returned</param>
 		/// <param name="predicate">A function to test each element for a condition</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> or <paramref name="predicate" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="predicate" /> is null</exception>
 		/// <returns>null if source is empty or if no element passes the test specified by <paramref name="predicate" />; otherwise, the first element in <paramref name="source" /> that passes the test specified by <paramref name="predicate" /></returns>
 		public static LinkedListNode<TResult> FirstOrDefaultNode<TResult>(this LinkedList<TResult> source, Func<TResult, bool> predicate)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			if (predicate == null)
 			{
-				throw new ArgumentException("predicate is null", "predicate");
+				throw new ArgumentNullException("predicate");
 			}
 			for (var current = source.First; current != null; current = current.Next)
 			{
@@ -156,17 +156,17 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">The LinkedList to sort</param>
 		/// <param name="keySelector">A function to extract a key from an element.</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> or <paramref name="keySelector" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="keySelector" /> is null</exception>
 		/// <returns>The source LinkedList to support method chaining</returns>
 		public static LinkedList<TSource> Sort<TSource, TKey>(this LinkedList<TSource> source, Func<TSource, TKey> keySelector) where TKey : IComparable
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			if (keySelector == null)
 			{
-				throw new ArgumentException("keySelector is null", "keySelector");
+				throw new ArgumentNullException("keySelector");
 			}
 			if (source.Count <= 1)
 			{

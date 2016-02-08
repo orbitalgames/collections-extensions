@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System;
 using System.Collections.Generic;
 
 namespace OrbitalGames.Collections
@@ -36,8 +37,17 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">Destination queue</param>
 		/// <param name="items">Items to add</param>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="items" /> is null</exception>
 		public static void EnqueueRange<TResult>(this Queue<TResult> source, IEnumerable<TResult> items)
 		{
+			if (source == null)
+			{
+				throw new ArgumentNullException("source");
+			}
+			if (items == null)
+			{
+				throw new ArgumentNullException("items");
+			}
 			foreach (var item in items)
 			{
 				source.Enqueue(item);

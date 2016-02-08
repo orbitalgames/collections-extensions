@@ -37,13 +37,13 @@ namespace OrbitalGames.Collections
 		/// </summary>
 		/// <param name="source">Enumerator instance</param>
 		/// <param name="initialCapacity">Optional initial capacity to which the result is set</param>
-		/// <exception cref="System.ArgumentException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
 		/// <returns>IList containing the enumerated values</returns>
 		public static IList<TResult> ToList<TResult>(this IEnumerator<TResult> source, int initialCapacity = 0)
 		{
 			if (source == null)
 			{
-				throw new ArgumentException("source is null", "source");
+				throw new ArgumentNullException("source");
 			}
 			var result = new List<TResult>(initialCapacity);
 			while (source.MoveNext())
