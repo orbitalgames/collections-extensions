@@ -48,5 +48,24 @@ namespace OrbitalGames.Collections
 			}
 			return string.Join(separator, source.Select<TSource, string>(x => x.ToString()).ToArray());
 		}
+
+		/// <summary>
+		/// Returns the cartesian product of a sequence of sequences.
+		/// </summary>
+		/// <param name="source">Sequence of sequences on which to operate</param>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
+		/// <returns>Cartesian product of source</returns>
+		/// <remarks>
+		/// Inspired by Eric Lippert: http://ericlippert.com/2010/06/28/computing-a-cartesian-product-with-linq/
+		/// </remarks>
+		public static IEnumerable<IEnumerable<T>> CartesianProduct<T>(this IEnumerable<IEnumerable<T>> source)
+		{
+			if (source == null)
+			{
+				throw new ArgumentNullException("source");
+			}
+			IEnumerable<IEnumerable<T>> emptyProduct = new[] { Enumerable.Empty<T>() };
+			return source.Aggregate(emptyProduct, (accumulator, sequence) => accumulator.SelectMany(accseq => sequence.Select(item => accseq.Concat(new[] { item }))));
+		}
 	}
 }
