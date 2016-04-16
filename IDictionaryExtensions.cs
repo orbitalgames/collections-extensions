@@ -49,5 +49,28 @@ namespace OrbitalGames.Collections
 			TValue result;
 			return source.TryGetValue(key, out result) ? result : defaultValue;
 		}
+
+		/// <summary>
+		/// Adds a range of key/value pairs to a dictionary.  Existing elements are updated if <paramref name="collection" /> contains keys already present in the dictionary.
+		/// </summary>
+		/// <param name="source">Source dictionary</param>
+		/// <param name="collection">Range of key/value pairs</param>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="collection" /> is null</exception>
+		public static void AddRange<TKey, TValue>(this IDictionary<TKey, TValue> source, IEnumerable<KeyValuePair<TKey, TValue>> collection)
+		{
+			if (source == null)
+			{
+				throw new ArgumentNullException("source");
+			}
+			if (collection == null)
+			{
+				throw new ArgumentNullException("collection");
+			}
+			foreach (var element in collection)
+			{
+				source[element.Key] = element.Value;
+			}
+		}
 	}
 }
