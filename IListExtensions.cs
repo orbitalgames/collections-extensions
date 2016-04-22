@@ -34,6 +34,29 @@ namespace OrbitalGames.Collections
 	public static class IListExtensions
 	{
 		/// <summary>
+		/// Adds a range of elements to the given IList.
+		/// </summary>
+		/// <param name="source">Source list</param>
+		/// <param name="collection">Range of elements</param>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="collection" /> is null</exception>
+		public static void AddRange<TSource>(this IList<TSource> source, IEnumerable<TSource> collection)
+		{
+			if (source == null)
+			{
+				throw new ArgumentNullException("source");
+			}
+			if (collection == null)
+			{
+				throw new ArgumentNullException("collection");
+			}
+			foreach (var item in collection)
+			{
+				source.Add(item);
+			}
+		}
+
+		/// <summary>
 		/// Returns a randomized copy of the given IList.
 		/// </summary>
 		/// <param name="source">Collection to randomize</param>
