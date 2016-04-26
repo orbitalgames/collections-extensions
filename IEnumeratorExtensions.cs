@@ -22,8 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System.Collections.Generic;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace OrbitalGames.Collections
 {
@@ -46,6 +47,27 @@ namespace OrbitalGames.Collections
 				throw new ArgumentNullException("source");
 			}
 			var result = new List<TResult>(initialCapacity);
+			while (source.MoveNext())
+			{
+				result.Add(source.Current);
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// Enumerates an IEnumerator instance and stores the results in an IList.
+		/// </summary>
+		/// <param name="source">Enumerator instance</param>
+		/// <param name="initialCapacity">Optional initial capacity to which the result is set</param>
+		/// <exception cref="System.ArgumentNullException">Thrown when <paramref name="source" /> is null</exception>
+		/// <returns>IList containing the enumerated values</returns>
+		public static IList ToList(this IEnumerator source, int initialCapacity = 0)
+		{
+			if (source == null)
+			{
+				throw new ArgumentNullException("source");
+			}
+			var result = new List<object>(initialCapacity);
 			while (source.MoveNext())
 			{
 				result.Add(source.Current);
