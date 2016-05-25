@@ -67,5 +67,17 @@ namespace OrbitalGames.Collections
 			IEnumerable<IEnumerable<T>> emptyProduct = new[] { Enumerable.Empty<T>() };
 			return source.Aggregate(emptyProduct, (accumulator, sequence) => accumulator.SelectMany(accseq => sequence.Select(item => accseq.Concat(new[] { item }))));
 		}
+
+		/// <summary>
+		/// Concatenates a single key/value pair to a sequence of <see cref="KeyValuePair{TKey, TValue}" /> elements.
+		/// </summary>
+		/// <param name="source">Sequence to which the new key/value pair will be concatenated</param>
+		/// <param name="key">Key</param>
+		/// <param name="value">Value</param>
+		/// <returns>Concatenation of the original sequence and the given key/value pair</returns>
+		public static IEnumerable<KeyValuePair<TKey, TValue>> ConcatKVP<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, TKey key, TValue value)
+		{
+			return source.Concat(new[] { new KeyValuePair<TKey, TValue>(key, value) });
+		}
 	}
 }
