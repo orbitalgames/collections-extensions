@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace OrbitalGames.Collections
@@ -71,6 +72,16 @@ namespace OrbitalGames.Collections
 			{
 				source[element.Key] = element.Value;
 			}
+		}
+
+		public static Dictionary<TKey, TValue> CastTo<TKey, TValue>(this IDictionary source)
+		{
+			Dictionary<TKey, TValue> result = new Dictionary<TKey, TValue>();
+			foreach( DictionaryEntry entry in source )
+			{
+				result.Add((TKey)entry.Key, (TValue)entry.Value);
+			}
+			return result;
 		}
 	}
 }
